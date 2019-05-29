@@ -1,0 +1,1 @@
+gD = GaussD('Mean', 0, 'StDev', 1)

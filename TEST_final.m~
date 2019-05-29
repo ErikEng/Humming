@@ -1,0 +1,272 @@
+% ReadInData:
+Files=dir('Class1');
+obsData = [];
+lData=[];
+for k=3:length(Files)
+    
+    FileNames=Files(k).name
+    disp(FileNames)
+    path_to_file = strcat('Class1','/',Files(k).name)
+    [s, fs] = audioread(path_to_file);
+    [frIsequence] = GetMusicFeatures(s,fs,0.03);
+    t = GetT(frIsequence);
+    [frIsequenceOut] = Postprocess(frIsequence,t);
+    plot(frIsequenceOut(1,:))
+    hold on
+    obsData = [obsData frIsequenceOut];
+    lData = [lData size(frIsequenceOut,2)];
+end
+%%
+nStates =13;
+B = MakeB(nStates);
+%pD =  prob(B, obsData(1,:));
+h1 = MakeLeftRightHMM(nStates,B,obsData,lData);
+%% 
+fs = 22050; % of sample frequency
+nobits = 16; % of bits per sample
+nochannels = 1; % of channels (mono)
+recording = audiorecorder (fs, nobits, nochannels);
+get (recording);
+recording = audiorecorder;
+disp ('Start talking');
+recordblocking(recording, 3);
+disp ('End of Recording');
+play(recording)
+w1 = getaudiodata(recording);
+%pause(3);
+filename = 'test.wav';
+audiowrite(filename,w1,8000)
+[s1, Fs1] = audioread('test.wav'); 
+sound(s1, Fs1)
+
+%%
+TestClass = 'Class1';
+testFile = '8.wav';
+path_to_file = strcat(TestClass,'/',testFile)
+[sTest, fsTest] = audioread(path_to_file);
+Classes = {'Class1', 'Class5', 'Class8', 'Class9', 'Class10'}
+[frIsequence] = GetMusicFeatures(sTest,fsTest,0.03);
+t = GetT(frIsequence);
+[frIsequenceOut] = Postprocess(frIsequence,t);
+h1 = load h1.mat;
+h
+lP = logprob([load("h1.mat"),load.("h5.mat"), load("h8.mat"), load("h9.mat"), load("h10.mat")],frIsequenceOut);
+[C, i] = max(lP);
+Classes{i}
+
+%%
+% ReadInData:
+Files=dir('Class2');
+obsData = [];
+lData=[];
+for k=3:length(Files)
+disp('k')
+disp(k)
+FileNames=Files(k).name
+disp(FileNames)
+path_to_file = strcat('Class2','/',Files(k).name)
+[s, fs] = audioread(path_to_file);
+[frIsequence] = GetMusicFeatures(s,fs,0.03);
+t = GetT(frIsequence);
+[frIsequenceOut] = Postprocess(frIsequence,t);
+% plot(frIsequenceOut(1,:))
+% hold on
+obsData = [obsData frIsequenceOut];
+lData = [lData size(frIsequenceOut,2)];
+end
+
+%%
+nStates =13;
+B = MakeB(nStates);
+%pD =  prob(B, obsData(1,:));
+h2 = MakeLeftRightHMM(nStates,B,obsData,lData);
+
+%%
+Files=dir('Class3');
+obsData = [];
+lData=[];
+for k=3:length(Files)
+FileNames=Files(k).name
+disp(FileNames)
+path_to_file = strcat('Class1','/',Files(k).name)
+[s, fs] = audioread(path_to_file);
+[frIsequence] = GetMusicFeatures(s,fs,0.03);
+t = GetT(frIsequence);
+[frIsequenceOut] = Postprocess(frIsequence,t);
+plot(frIsequenceOut(1,:))
+hold on
+obsData = [obsData frIsequenceOut];
+lData = [lData size(frIsequenceOut,2)];
+end
+%%
+nStates =7;
+B = MakeB(nStates);
+%pD =  prob(B, obsData(1,:));
+h3 = MakeLeftRightHMM(nStates,B,obsData,lData);
+
+
+%% 
+
+Files=dir('Class4');
+obsData = [];
+lData=[];
+for k=4:length(Files)
+FileNames=Files(k).name
+disp(FileNames)
+path_to_file = strcat('Class4','/',Files(k).name)
+[s, fs] = audioread(path_to_file);
+[frIsequence] = GetMusicFeatures(s,fs,0.03);
+t = GetT(frIsequence);
+[frIsequenceOut] = Postprocess(frIsequence,t);
+plot(frIsequenceOut(1,:))
+hold on
+obsData = [obsData frIsequenceOut];
+lData = [lData size(frIsequenceOut,2)];
+end
+disp('done')
+%% h4
+nStates =6;
+B = MakeB(nStates);
+%pD =  prob(B, obsData(1,:));
+h4 = MakeLeftRightHMM(nStates,B,obsData,lData);
+disp('fin')
+
+%% Class5
+classname = 'Class5';
+Files=dir(classname);
+obsData = [];
+lData=[];
+for k=4:length(Files)
+FileNames=Files(k).name;
+disp(FileNames);
+path_to_file = strcat(classname,'/',Files(k).name);
+[s, fs] = audioread(path_to_file);
+[frIsequence] = GetMusicFeatures(s,fs,0.03);
+t = GetT(frIsequence);
+[frIsequenceOut] = Postprocess(frIsequence,t);
+plot(frIsequenceOut(1,:))
+hold on
+obsData = [obsData frIsequenceOut];
+lData = [lData size(frIsequenceOut,2)];
+end
+%% h5
+nStates =5;
+B = MakeB(nStates);
+%pD =  prob(B, obsData(1,:));
+h5 = MakeLeftRightHMM(nStates,B,obsData,lData);
+
+%% Class6
+classname = 'Class6'
+Files=dir(classname);
+obsData = [];
+lData=[];
+for k=4: length(Files)
+FileNames=Files(k).name
+disp(FileNames)
+path_to_file = strcat(classname,'/',Files(k).name)
+[s, fs] = audioread(path_to_file);
+[frIsequence] = GetMusicFeatures(s,fs,0.03);
+t = GetT(frIsequence);
+[frIsequenceOut] = Postprocess(frIsequence,t);
+plot(frIsequenceOut(1,:))
+hold on
+obsData = [obsData frIsequenceOut];
+lData = [lData size(frIsequenceOut,2)];
+end
+
+disp('done')
+%% h6
+nStates =7;
+B = MakeB(nStates);
+%pD =  prob(B, obsData(1,:));
+h6 = MakeLeftRightHMM(nStates,B,obsData,lData);
+
+%%
+disp('fuck you')
+
+
+%%
+%% Class8
+classname = 'Class8'
+Files=dir(classname);
+obsData = [];
+lData=[];
+for k=4:length(Files)
+FileNames=Files(k).name
+disp(FileNames)
+path_to_file = strcat(classname,'/',Files(k).name)
+[s, fs] = audioread(path_to_file);
+[frIsequence] = GetMusicFeatures(s,fs,0.03);
+t = GetT(frIsequence);
+[frIsequenceOut] = Postprocess(frIsequence,t);
+plot(frIsequenceOut(1,:))
+hold on
+obsData = [obsData frIsequenceOut];
+lData = [lData size(frIsequenceOut,2)];
+end
+
+disp('done')
+%% h8
+nStates =7;
+B = MakeB(nStates);
+%pD =  prob(B, obsData(1,:));
+h8 = MakeLeftRightHMM(nStates,B,obsData,lData);
+
+
+%% Class9
+classname = 'Class9'
+Files=dir(classname);
+obsData = [];
+lData=[];
+for k=4: length(Files)
+FileNames=Files(k).name
+disp(FileNames)
+path_to_file = strcat(classname,'/',Files(k).name)
+[s, fs] = audioread(path_to_file);
+[frIsequence] = GetMusicFeatures(s,fs,0.03);
+t = GetT(frIsequence);
+[frIsequenceOut] = Postprocess(frIsequence,t);
+plot(frIsequenceOut(1,:))
+hold on
+obsData = [obsData frIsequenceOut];
+lData = [lData size(frIsequenceOut,2)];
+end
+
+disp('done')
+%% h9
+nStates =4;
+B = MakeB(nStates);
+%pD =  prob(B, obsData(1,:));
+h9 = MakeLeftRightHMM(nStates,B,obsData,lData);
+disp('done')
+
+
+%% Class10
+classname = 'Class10'
+Files=dir(classname);
+obsData = [];
+lData=[];
+for k=4: length(Files)
+FileNames=Files(k).name
+disp(FileNames)
+path_to_file = strcat(classname,'/',Files(k).name)
+[s, fs] = audioread(path_to_file);
+[frIsequence] = GetMusicFeatures(s,fs,0.03);
+t = GetT(frIsequence);
+[frIsequenceOut] = Postprocess(frIsequence,t);
+plot(frIsequenceOut(1,:))
+hold on
+obsData = [obsData frIsequenceOut];
+lData = [lData size(frIsequenceOut,2)];
+end
+
+disp('done')
+%% h9
+nStates =4;
+B = MakeB(nStates);
+%pD =  prob(B, obsData(1,:));
+h10 = MakeLeftRightHMM(nStates,B,obsData,lData);
+disp('done')
+
+%%
+%calc
