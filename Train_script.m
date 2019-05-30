@@ -35,3 +35,25 @@ hmms = {h1, h2, h3, h4,  h6, h7, h8, h10}
 testHmm = load("hmms8.mat")
 hmm = testHmm.hmms
 testh1 = hmm(1) 
+
+%% Temp testing
+
+TestClass = 'Class1';
+testFile = '4.wav';
+path_to_file = strcat(TestClass,'/',testFile)
+[sTest, fsTest] = audioread(path_to_file);
+[frIsequence] = GetMusicFeatures(sTest,fsTest,0.03);
+t = GetT(frIsequence);
+[frIsequenceOut] = Postprocess(frIsequence,t);
+h1 = hmms{1};
+h2 = hmms{2};
+h3 = hmms{3};
+h4 = hmms{4};
+h5 = hmms{5};
+h7 = hmms{6};
+h8 = hmms{7};
+h10 = hmms{8};
+lP = logprob([h1, h2, h3, h4, h5, h7, h8, h10],frIsequenceOut);
+[C, i] = max(lP);
+disp(i) 
+
